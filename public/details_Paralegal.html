@@ -1,0 +1,235 @@
+<!--Paralegal AI - Knight Hacks Winner-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Paralegal AI - Intelligent Legal Research</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/profile_pic.jpeg" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  
+</head>
+
+<body>
+
+  <!-- ======= Mobile nav toggle button ======= -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="d-flex flex-column">
+
+      <div class="profile">
+        <img src="assets/img/prof_picture.jpg" alt="" class="img-fluid rounded-circle">
+        <h1 class="text-light"><a href="index.html">Dominick Dupuy</a></h1>
+        <div class="social-links mt-3 text-center">
+          <a href="https://www.instagram.com/dominick_dupuy" class="instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/dominick-dupuy/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+      </div>
+
+      <nav id="navbar" class="nav-menu navbar">
+        <ul>
+          <li><a href="index.html" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="index.html" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
+          <li><a href="index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
+          <li><a href="index.html" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
+          <li><a href="index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Paralegal AI - Intelligent Legal Research</h2>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li>Paralegal AI</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: Artificial Intelligence, Legal Tech, Data Engineering</li>
+                <li><strong>Technologies</strong>: Python, AsyncIO, CourtListener API, vLLM, FAISS, PostgreSQL, AMD MI300X</li>
+                <li><strong>Achievement</strong>: Knight Hacks 2025 Winner (1st Place AMD Track, 3rd Place Morgan & Morgan)</li>
+                <li><strong>Project date</strong>: 2025</li>
+                <li><strong>Project URL</strong>: <a href="https://github.com/BonelessWater/Paralegal">https://github.com/BonelessWater/Paralegal</a></li>
+              </ul>
+            </div>
+            
+          </div>
+
+          <div class="col-lg-4">
+            
+            <div class="portfolio-description">
+              <h2>Results</h2>
+              <p>
+                Generated queries: 3-5 intelligent legal queries. Scraped cases: 20-60 relevant legal opinions. Integration stats: success and failure metrics. Performance data: cases per second and total time.
+              </p>
+              <h2>Key Features</h2>
+              <p><strong>Intelligent Query Generation</strong></p>
+              <p>
+                Uses Saul-7B Legal AI to analyze user questions, generates 3-5 optimized search queries, routes to optimal sources (CourtListener versus LexisNexis), and assigns priorities.
+              </p>
+              <p><strong>Hyper-Parallelized Scraping</strong></p>
+              <p>
+                100 concurrent workers with async/await throughout the pipeline, reaching 41.7 cases per second peak performance, which is 4-8x faster than baseline.
+              </p>
+              <p><strong>Multi-Source Integration</strong></p>
+              <p>
+                CourtListener provides 10.6M opinions via free API. LexisNexis enables premium case coverage through web scraping. Smart routing sends common cases to CourtListener and rare cases to LexisNexis.
+              </p>
+              <p><strong>GPU Acceleration</strong></p>
+              <p>
+                Uses AMD MI300X with 192GB VRAM, FAISS on GPU for fast similarity search, and sentence transformers for embeddings.
+              </p>
+              <h2>Performance Metrics</h2>
+              <ul>
+                <li>Peak Scraping Speed: 41.7 cases/sec</li>
+                <li>Average Throughput: 6.5 cases/sec</li>
+                <li>Concurrent Workers: 100 workers</li>
+                <li>Total Cases Tested: 135 cases</li>
+                <li>Time for 135 Cases: 20.73 seconds</li>
+                <li>API Rate Limit: 5,000 req/hour</li>
+                <li>Database Size: 10.6M opinions</li>
+                <li>Speed Improvement: 4-8x faster</li>
+              </ul>
+              <h2>Configuration</h2>
+              <p><strong>Environment Variables</strong></p>
+              <pre><code># Required
+COURTLISTENER_API_TOKEN=your_token_here
+VLLM_BASE_URL=http://localhost:8000
+
+# Database
+DB_HOST=134.199.202.8
+DB_NAME=paralegal_db
+DB_USER=paralegal_user
+DB_PASSWORD=********
+
+# Optional
+LEXISNEXIS_USERNAME=your_username
+LEXISNEXIS_PASSWORD=your_password
+</code></pre>
+              <p><strong>Performance Tuning (orchestrator.py)</strong></p>
+              <pre><code>max_concurrent = 100
+batch_size = 20
+rate_limit = 1.0
+</code></pre>
+              <h2>Testing</h2>
+              <p>Run the complete system test with <code>./test_complete_system.sh</code>.</p>
+              <ul>
+                <li>Test 1: CourtListener API Access - verifies token and endpoints</li>
+                <li>Test 2: Query Generator - tests Saul-7B generation</li>
+                <li>Test 3: Intelligent Scraper - tests async scraping (5 cases)</li>
+                <li>Test 4: Hyper-Parallelized Orchestrator - tests full pipeline (60 cases)</li>
+                <li>Test 5: Performance Benchmark - tests concurrent research (135 cases)</li>
+              </ul>
+              <h2>Troubleshooting</h2>
+              <ul>
+                <li>Model not found: check vLLM server at <code>http://localhost:8000/v1/models</code></li>
+                <li>API rate limit exceeded: verify <code>COURTLISTENER_API_TOKEN</code> and reduce <code>max_concurrent</code></li>
+                <li>Module not found: run <code>./quick_fix_dependencies.sh</code></li>
+              </ul>
+              <h2>Project Structure</h2>
+              <pre><code>Paralegal/
+  SYSTEM_DOCUMENTATION.md
+  CLEANUP_PLAN.md
+  README.md
+  test_complete_system.sh
+  quick_fix_dependencies.sh
+
+  AMD_server/ml_pipeline/
+    intelligent_scraper.py
+    query_generator.py
+    auto_integration.py
+    orchestrator.py
+    rag_embeddings.py
+    data_loader.py
+
+  docs/
+    INTELLIGENT_SCRAPING_SYSTEM.md
+    FAISS_EXECUTION_GUIDE.md
+    DATABASE_DOCUMENTATION.md
+    MODEL_SETUP_GUIDE.md
+    GPU_OPTIMIZATION_GUIDE.md
+</code></pre>
+              <h2>Team</h2>
+              <p>Project: Paralegal AI. Team: BonelessWater. Hackathon: Knight Hacks 2025.</p>
+              <h2>License</h2>
+              <p>MIT License</p>
+              <h2>Acknowledgments</h2>
+              <p>AMD for MI300X GPU server access, CourtListener for legal opinion API, Equall/Saul-7B model, vLLM, and Knight Hacks organizers.</p>
+              <h2>Last Updated</h2>
+              <p>October 26, 2025. Version 2.0.0. Status: Production ready.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+  </footer><!-- End  Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

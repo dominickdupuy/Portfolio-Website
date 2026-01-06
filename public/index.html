@@ -66,7 +66,7 @@
   <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
     <div class="hero-container" data-aos="fade-in">
       <h1>Dominick Dupuy</h1>
-      <p>I'm a <span class="typed" data-typed-items="Data Analyst, Developer, AI Specialist"></span></p>
+      <p>I'm a <span class="typed" data-typed-items="Data Analyst, Quant, AI Specialist"></span></p>
     </div>
   </section><!-- End Hero -->
 
@@ -104,7 +104,6 @@
               <div class="col-lg-6">
                 <ul>
                   <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Bachelor</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
                 </ul>
               </div>
             </div>
@@ -293,7 +292,7 @@
               <h4>Bachelor of Science in Statistics</h4>
               <h5>Expected Graduation: May 2027</h5>
               <p><em>University of Florida, Gainesville, FL</em></p>
-              <p><strong>GPA: 3.85 / 4.0</strong></p>
+              <p><strong>GPA: 3.82 / 4.0</strong></p>
             </div>
 
             <h3 class="resume-title">Hackathon Achievements</h3>
@@ -308,12 +307,23 @@
             </div>
             <div class="resume-item">
               <h4>HealthHacks 2025 - Dual Winner</h4>
-              <h5>2025</h5>
+              <h5>October 2025 | Tampa, FL</h5>
               <p><em>CareTrackr AI Patient Follow-Up</em></p>
               <ul>
                 <li>2nd Place Overall Pitch Competition</li>
                 <li>1st Place Clinical Operations Track</li>
                 <li>AI Infrastructure Lead - designed 17-agent system with sub-5s processing</li>
+              </ul>
+            </div>
+
+            <div class="resume-item">
+              <h4>Knight Hacks 2025 - 1st Place (AMD) & 3rd Place (Morgan & Morgan)</h4>
+              <h5>2025</h5>
+              <p><em>Paralegal AI - Intelligent Legal Research System</em></p>
+              <ul>
+                <li>Built a hyper-parallel legal research system with 100 async workers and 41.7 cases/sec peak throughput</li>
+                <li>Generated 3-5 optimized legal queries per question using Saul-7B for targeted search</li>
+                <li>Integrated CourtListener and LexisNexis routing for common versus rare case coverage</li>
               </ul>
             </div>
           </div>
@@ -431,6 +441,38 @@
             </div>
           </div>
 
+
+          <!-- Paralegal AI -->
+          <div class="col-lg-6 col-md-12 portfolio-item">
+            <div class="portfolio-wrap" style="background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%); padding: 30px; border-radius: 10px;">
+              <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 8px;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                  <span style="font-size: 36px; margin-right: 15px; font-weight: 700; color: #f59e0b;">WIN</span>
+                  <div>
+                    <h3 style="margin: 0; color: #f59e0b;">Knight Hacks 2025 - 1st Place (AMD) & 3rd Place (Morgan & Morgan)</h3>
+                    <p style="margin: 5px 0 0 0; color: #666;">Multi-award hackathon win</p>
+                  </div>
+                </div>
+                <h4 style="color: #333; margin: 15px 0;">Paralegal AI: Intelligent Legal Research</h4>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                  Intelligent legal research system that generates 3-5 optimized queries, scrapes 20-60 relevant opinions per question, and benchmarks at 41.7 cases/sec with 100 async workers. Uses Saul-7B for query generation and GPU-accelerated FAISS for retrieval.
+                </p>
+                <div style="margin-top: 20px;">
+                  <span style="display: inline-block; background: #f59e0b; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Legal AI</span>
+                  <span style="display: inline-block; background: #f97316; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Async Systems</span>
+                  <span style="display: inline-block; background: #84cc16; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px;">GPU Acceleration</span>
+                </div>
+                <div class="portfolio-links" style="margin-top: 20px; position: relative; bottom: auto;">
+                  <a href="details_Paralegal.html" class="btn btn-primary" style="background: #f59e0b; border: none; margin-right: 10px;">
+                    <i class="bx bx-plus"></i> More Details
+                  </a>
+                  <a href="https://github.com/BonelessWater/Paralegal" class="btn btn-primary" style="background: #f97316; border: none;">
+                    <i class="bx bx-link"></i> View Project
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -504,6 +546,7 @@
           </div>
 
           <!-- Financial Portfolio Builder (Trading Bot) -->
+           <!--
           <div class="col-lg-4 col-md-6 portfolio-item filter-FS filter-DA filter-AI">
             <div class="portfolio-wrap text-center">
               <a href="details_Trader.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Financial Portfolio Builder</a>
@@ -513,6 +556,7 @@
               </div>
             </div>
           </div>
+        -->
 
           <!-- Neural Network -->
           <div class="col-lg-4 col-md-6 portfolio-item filter-AI">
@@ -546,6 +590,7 @@
               </div>
             </div>
           </div>
+          -->
 
         </div>
 
@@ -627,6 +672,25 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const source = urlParams.get('source');
+
+        await fetch('/update-ip' + (source ? `?source=${source}` : ''), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ip: publicIp })
+        });
+
+        const countResponse = await fetch('/get-count');
+        const countData = await countResponse.json();
+        document.getElementById('visitor-count').innerText = countData.count;
+      } catch (err) {
+        console.error("Error updating visitor counter:", err);
+      }
+    });
+  </script>
+  
+</body>
+
+</html>st source = urlParams.get('source');
 
         await fetch('/update-ip' + (source ? `?source=${source}` : ''), {
           method: 'POST',

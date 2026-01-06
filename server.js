@@ -133,7 +133,7 @@ app.get('/get-count', (req, res) => {
     // Split into lines, ignoring empty lines.
     const lines = data.split("\n").filter(line => line.trim() !== "");
     // Exclude header (first line), if present.
-    let entryCount = lines.length > 0 ? lines.length + 1115 : 0;
+    let entryCount = lines.length > 0 ? lines.length + 5120 : 0;
     res.json({ count: entryCount });
   });
 });

@@ -683,13 +683,22 @@
       }
 
       var candles = buildSeries(N);
+      // Chronological, but evenly spaced rather than date-proportional: the
+      // real dates bunch seven of these into late 2025 / early 2026, which
+      // would overlap the labels into an unreadable pile. The candle series
+      // underneath is synthetic anyway, so the axis is an ordering, not a
+      // scale. Alternating sides in draw() assumes this even spacing.
       var milestones = [
-        { t: 0.20, label: 'ALGOGATORS · PRESIDENT' },
-        { t: 0.36, label: 'BANCO POPULAR · ANALYST' },
-        { t: 0.52, label: 'CONFLUENCE · QUANT DEV' },
-        { t: 0.66, label: '5 HACKATHONS WON' },
-        { t: 0.80, label: 'QUANTED · CO-FOUNDER' },
-        { t: 0.94, label: 'BLACKROCK · ALADDIN' }
+        { t: 0.16, label: 'ALGOGATORS · PRESIDENT' },   // Aug 2024
+        { t: 0.25, label: 'BANCO POPULAR · ANALYST' },  // May 2025
+        { t: 0.34, label: 'SHELLHACKS · MIAMI' },       // Sep 26, 2025
+        { t: 0.43, label: 'HEALTHHACKS · TAMPA' },      // Oct 5, 2025
+        { t: 0.52, label: 'CONFLUENCE · QUANT DEV' },   // Oct 2025
+        { t: 0.61, label: 'KNIGHT HACKS · ORLANDO' },   // Oct 24, 2025
+        { t: 0.70, label: 'SWAMPHACKS · GAINESVILLE' }, // Jan 23, 2026
+        { t: 0.79, label: 'HACKLYTICS · ATLANTA' },     // Feb 20, 2026
+        { t: 0.88, label: 'QUANTED · CO-FOUNDER' },     // Mar 2026
+        { t: 0.96, label: 'BLACKROCK · ALADDIN' }       // Jun 2026
       ];
 
       function resize() {
@@ -829,7 +838,11 @@
         g.fillStyle = ACCENT; g.beginPath(); g.arc(lx, ly, 3.5, 0, Math.PI * 2); g.fill();
         g.shadowColor = rgba(0.8); g.shadowBlur = 14; g.fill(); g.shadowBlur = 0;
 
-        if (cam.zoom < 2.2) {
+        // Same-side neighbours sit 0.17*W apart and the longest label
+        // ("SWAMPHACKS · GAINESVILLE") runs ~144px at 10px mono, so the
+        // labels start colliding below ~850px. Drop them rather than render
+        // a pile; the chart itself still draws.
+        if (cam.zoom < 2.2 && W >= 880) {
           var a = Math.min(1, (2.2 - cam.zoom) / 1.1);
           g.globalAlpha = cam.alpha * a;
           g.font = "10px 'JetBrains Mono', monospace";

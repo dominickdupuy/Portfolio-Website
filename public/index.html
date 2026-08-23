@@ -6,8 +6,8 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Dominick Dupuy Portfolio</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+  <meta content="Dominick Dupuy &mdash; CS and Statistics at the University of Florida. Quant research, trading infrastructure, and AI systems." name="description">
+  <meta content="Dominick Dupuy, quant, quantitative developer, machine learning, University of Florida" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.ico" rel="icon">
@@ -15,698 +15,882 @@
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090d;
+      --fg: #e8eaed;
+      --muted: #a8b0bb;
+      --soft: #c3cad4;
+      --dim: #7d8794;
+      --faint: #4a525e;
+      --faint2: #6b7480;
+      --line: #1a1f28;
+      --line2: #161b23;
+      --line3: #232a34;
+      --accent: #4fe0a0;
+      --accent-hi: #8af0c4;
+      --gold: #e8b455;
+      --blue: #6ba7ff;
+      --red: #ff6b5a;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --pad: clamp(24px, 7vw, 130px);
+      --pad-rail: clamp(170px, 7vw, 190px);
+    }
 
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hi); }
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    @keyframes riseIn { from { opacity: 0; transform: translateY(38px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideL { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+    @keyframes tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+
+    .shell { position: relative; background: var(--bg); }
+
+    /* ---- backdrop ---- */
+    #chart { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+    .vignette {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(120% 80% at 50% 0%, rgba(7,9,13,0) 40%, rgba(7,9,13,0.82) 100%);
+    }
+
+    /* ---- ticker bar ---- */
+    .ticker {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+      background: rgba(7,9,13,0.82); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; height: 38px; overflow: hidden;
+    }
+    .ticker__brand {
+      flex-shrink: 0; padding: 0 14px; height: 100%;
+      display: flex; align-items: center; gap: 8px;
+      border-right: 1px solid var(--line);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--accent);
+    }
+    .ticker__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.6s steps(1) infinite; }
+    .ticker__track { flex: 1; overflow: hidden; white-space: nowrap; }
+    .ticker__tape { display: inline-flex; animation: tape 42s linear infinite; will-change: transform; }
+    .ticker__item {
+      display: inline-flex; align-items: baseline; gap: 7px; padding: 0 20px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--dim);
+    }
+    .ticker__item b { font-weight: 400; color: var(--fg); }
+    .ticker__sound {
+      flex-shrink: 0; height: 100%; padding: 0 14px; background: transparent;
+      border: 0; border-left: 1px solid var(--line); color: var(--faint);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; cursor: pointer;
+    }
+    .ticker__sound:hover { background: #0e1218; }
+    .ticker__sound.is-on { color: var(--accent); }
+
+    /* ---- chapter rail ---- */
+    .rail {
+      position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 20;
+      display: flex; flex-direction: column; gap: 14px; align-items: flex-end;
+    }
+    .rail a {
+      display: flex; align-items: center; gap: 9px;
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--faint2);
+    }
+    .rail a:hover { color: var(--fg); }
+    .rail .dash { width: 18px; height: 1px; background: #2a313c; }
+
+    /* ---- readout / visitor counter ---- */
+    .readout {
+      position: fixed; left: 22px; bottom: 22px; z-index: 20;
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--faint2);
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .readout__count { color: var(--fg); }
+    #ticker-readout { color: var(--accent); }
+
+    /* ---- shared section bits ---- */
+    section { position: relative; z-index: 10; box-sizing: border-box; }
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em; color: var(--accent); }
+    .eyebrow--gold { color: var(--gold); }
+    .lead { font-size: clamp(16px, 1.35vw, 20px); line-height: 1.6; color: var(--muted); }
+    h2.sec { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.02; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
+
+    /* ---- open ---- */
+    #open {
+      height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding: 0 var(--pad) 110px;
+    }
+    #open .eyebrow { margin-bottom: 26px; animation: fadeIn 1.2s ease both; }
+    #open h1 {
+      font-size: clamp(48px, 9.5vw, 156px); line-height: 0.88; font-weight: 700;
+      letter-spacing: -0.035em; margin: 0;
+      animation: riseIn 1s cubic-bezier(.2,.7,.2,1) both;
+    }
+    #open .intro {
+      max-width: 560px; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5;
+      color: var(--muted); margin: 34px 0 0 0;
+      animation: riseIn 1s .18s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 52px; flex-wrap: wrap;
+      animation: riseIn 1s .34s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .stat { display: flex; flex-direction: column; gap: 6px; }
+    .stat__v { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--accent); }
+    .stat__k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--dim); }
+    .cue {
+      position: absolute; left: var(--pad); bottom: 46px;
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--faint);
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+    /* ---- climb / reveal ---- */
+    #climb { height: 260vh; padding: 0 var(--pad); }
+    #climb .sticky { position: sticky; top: 42vh; max-width: 620px; }
+    #climb h2 { font-size: clamp(34px, 5vw, 76px); line-height: 1.0; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
+    #climb .note {
+      font-family: var(--mono); font-size: 12px; line-height: 1.9; color: var(--faint);
+      margin: 34px 0 0 0; letter-spacing: 0.06em;
+    }
+    #reveal { height: 170vh; padding: 0 var(--pad); display: flex; align-items: flex-end; }
+    #reveal .sticky { position: sticky; bottom: 12vh; max-width: 700px; padding-bottom: 12vh; }
+    #reveal h2 { font-size: clamp(32px, 4.4vw, 66px); line-height: 1.02; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
+
+    /* scroll-driven reveals; degrade to a plain on-load animation where view() is unsupported */
+    .sc-fade { animation: fadeIn 1s linear both; animation-timeline: view(); }
+    .sc-rise { animation: riseIn 1s linear both; animation-timeline: view(); }
+    .sc-slide { animation: slideL .9s linear both; animation-timeline: view(); }
+    .r-a { animation-range: entry 10% entry 70%; }
+    .r-b { animation-range: entry 15% entry 85%; }
+    .r-c { animation-range: entry 25% cover 20%; }
+    .r-d { animation-range: entry 40% cover 30%; }
+    .r-e { animation-range: entry 20% entry 80%; }
+    .r-f { animation-range: entry 25% cover 10%; }
+    .r-g { animation-range: entry 35% cover 25%; }
+    .r-h { animation-range: entry 5% entry 60%; }
+    .r-i { animation-range: entry 5% entry 65%; }
+
+    /* ---- positions ---- */
+    #positions { padding: 18vh var(--pad) 16vh; padding-right: var(--pad-rail); }
+    #positions .eyebrow { margin-bottom: 18px; }
+    #positions h2.sec { margin-bottom: 12px; }
+    .sec-meta { font-family: var(--mono); font-size: 12px; color: var(--faint2); letter-spacing: 0.08em; margin: 0 0 60px 0; }
+    .positions { display: flex; flex-direction: column; gap: 20px; }
+    .position {
+      border: 1px solid var(--line); border-radius: 3px;
+      background: rgba(14,18,24,0.72); backdrop-filter: blur(10px);
+      padding: clamp(22px, 2.6vw, 40px);
+      display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
+      gap: clamp(24px, 4vw, 64px);
+    }
+    .position__tags { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+    .position__tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--faint); }
+    .badge { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 2px; border: 1px solid currentColor; }
+    .position h3 { font-size: clamp(24px, 2.5vw, 36px); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 10px 0; }
+    .position__org { font-size: 16px; line-height: 1.45; color: var(--muted); margin: 0 0 4px 0; }
+    .position__when { font-family: var(--mono); font-size: 12px; color: var(--faint); letter-spacing: 0.08em; margin: 0 0 26px 0; }
+    .metrics { display: flex; gap: 30px; flex-wrap: wrap; }
+    .metric { display: flex; flex-direction: column; gap: 5px; }
+    .metric__v { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--accent); }
+    .metric__k { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; color: var(--dim); }
+    .bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-self: center; }
+    .bullets li {
+      display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 15px 0;
+      border-top: 1px solid var(--line2); font-size: 15px; line-height: 1.55; color: var(--soft);
+    }
+    .bullets .n { font-family: var(--mono); font-size: 11px; color: var(--accent); padding-top: 3px; }
+
+    .earlier { margin-top: 46px; border-top: 1px solid var(--line); padding-top: 28px; }
+    .earlier__label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--faint2); margin-bottom: 20px; }
+    .earlier__grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px; background: var(--line2); border: 1px solid var(--line2);
+    }
+    .earlier__cell { background: var(--bg); padding: 22px 24px; }
+    .earlier__cell h4 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 6px 0; }
+    .earlier__cell .org { font-size: 14px; color: var(--muted); margin: 0 0 8px 0; }
+    .earlier__cell .when { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--faint2); margin: 0 0 14px 0; }
+    .earlier__cell .note { font-size: 14px; line-height: 1.5; color: var(--soft); margin: 0; }
+
+    /* ---- gains ---- */
+    #gains { padding: 12vh var(--pad) 18vh; padding-right: var(--pad-rail); }
+    #gains .eyebrow { margin-bottom: 18px; }
+    #gains h2.sec { margin-bottom: 12px; }
+    #gains .lead { font-size: clamp(16px, 1.3vw, 19px); margin: 0 0 60px 0; max-width: 540px; }
+    .wins { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .win {
+      border: 1px solid var(--line); border-top: 2px solid var(--accent); border-radius: 3px;
+      background: rgba(14,18,24,0.72); backdrop-filter: blur(10px);
+      padding: clamp(24px, 2.4vw, 34px); display: flex; flex-direction: column;
+    }
+    .win__head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-bottom: 22px; }
+    .win__event { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--dim); }
+    .win__place { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--accent); }
+    .win__headline { font-family: var(--mono); font-size: clamp(34px, 3.6vw, 52px); font-weight: 700; line-height: 1; color: var(--accent); margin-bottom: 22px; }
+    .win h3 { font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 12px 0; }
+    .win__body { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0 0 24px 0; flex: 1; }
+    .win__tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 22px; }
+    .chip {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--dim);
+      border: 1px solid var(--line3); padding: 4px 9px; border-radius: 2px;
+    }
+    .win__link {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--accent);
+      display: inline-flex; align-items: center; gap: 8px;
+      border-top: 1px solid var(--line); padding-top: 18px; transition: gap .2s ease;
+    }
+    .win__link:hover { gap: 14px; }
+    .win--gold { border-top-color: var(--gold); }
+    .win--gold .win__place, .win--gold .win__headline, .win--gold .win__link { color: var(--gold); }
+    .win--blue { border-top-color: var(--blue); }
+    .win--blue .win__place, .win--blue .win__headline, .win--blue .win__link { color: var(--blue); }
+
+    .founder {
+      margin-top: 56px; border: 1px solid var(--line); border-left: 2px solid var(--gold);
+      background: rgba(14,18,24,0.72); backdrop-filter: blur(10px);
+      padding: clamp(26px, 3vw, 44px);
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: clamp(24px, 4vw, 56px); align-items: center;
+    }
+    .founder__label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--gold); margin-bottom: 14px; }
+    .founder h3 { font-size: clamp(24px, 2.6vw, 38px); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px 0; }
+    .founder p { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0; }
+    .founder__stats { display: flex; gap: 34px; flex-wrap: wrap; }
+    .founder__stats .stat__v { font-size: 30px; color: var(--gold); }
+    .founder__stats .stat__k { font-size: 9px; color: var(--faint2); }
+
+    /* ---- contact ---- */
+    #contact {
+      min-height: 100vh; padding: 16vh var(--pad) 12vh; padding-right: var(--pad-rail);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    #contact .eyebrow { margin-bottom: 22px; }
+    #contact h2 {
+      font-size: clamp(38px, 6.5vw, 104px); line-height: 0.95; font-weight: 700;
+      letter-spacing: -0.035em; margin: 0 0 34px 0;
+    }
+    #contact .lead { font-size: clamp(17px, 1.5vw, 22px); line-height: 1.55; max-width: 580px; margin: 0 0 54px 0; }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .cta { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; padding: 17px 30px; border-radius: 2px; }
+    .cta--solid { background: var(--accent); color: var(--bg); font-weight: 500; }
+    .cta--solid:hover { background: var(--accent-hi); color: var(--bg); }
+    .cta--ghost { border: 1px solid #2a313c; color: var(--fg); }
+    .cta--ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .colophon {
+      margin-top: 90px; padding-top: 22px; border-top: 1px solid var(--line2);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: #3d4550;
+    }
+
+    /* ---- responsive ---- */
+    @media (max-height: 560px) { .cue { display: none !important; } }
+    @media (max-width: 1100px) {
+      .rail { display: none !important; }
+      #positions, #gains, #contact { padding-right: var(--pad); }
+    }
+    @media (max-width: 820px) {
+      .position { grid-template-columns: minmax(0, 1fr); }
+      .bullets { align-self: start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ticker__tape, .ticker__dot, .cue { animation: none; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="shell">
 
-  <!-- ======= Mobile nav toggle button ======= -->
-  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+    <canvas id="chart"></canvas>
+    <div class="vignette"></div>
 
-  <!-- ======= Header ======= -->
-  <header id="header">
-    <div class="d-flex flex-column">
-
-      <div class="profile">
-        <img src="assets/img/domside_cropped.jpg" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light"><a href="index.html">Dominick Dupuy</a></h1>
-        <div class="social-links mt-3 text-center">
-          <a href="https://www.instagram.com/dominick_dupuy" class="instagram"><i class="bx bxl-instagram"></i></a>
-          <a href="https://www.linkedin.com/in/dominick-dupuy/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+    <!-- ======= Ticker bar ======= -->
+    <div class="ticker">
+      <div class="ticker__brand"><span class="ticker__dot"></span>DOM</div>
+      <div class="ticker__track">
+        <div class="ticker__tape">
+          <span class="ticker__item"><b>GPA</b><span style="color:#4fe0a0">3.75</span></span>
+          <span class="ticker__item"><b>AUM</b><span style="color:#4fe0a0">$500K</span></span>
+          <span class="ticker__item"><b>ANALYSTS</b><span style="color:#e8eaed">40+</span></span>
+          <span class="ticker__item"><b>RISK EXPOSURE</b><span style="color:#ff6b5a">&minus;20%</span></span>
+          <span class="ticker__item"><b>STRATEGY DEV</b><span style="color:#ff6b5a">&minus;15%</span></span>
+          <span class="ticker__item"><b>HACKATHON WINS</b><span style="color:#e8b455">&times;5</span></span>
+          <span class="ticker__item"><b>PRIZES</b><span style="color:#e8b455">$15K+</span></span>
+          <span class="ticker__item"><b>SURFACED</b><span style="color:#4fe0a0">$2B</span></span>
+          <span class="ticker__item"><b>MODEL ACC</b><span style="color:#4fe0a0">94%</span></span>
+          <span class="ticker__item"><b>ANOMALIES</b><span style="color:#4fe0a0">97%</span></span>
+          <span class="ticker__item"><b>REPORT TIME</b><span style="color:#ff6b5a">&minus;80%</span></span>
+          <span class="ticker__item"><b>GRAD</b><span style="color:#e8eaed">DEC 2026</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>GPA</b><span style="color:#4fe0a0">3.75</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>AUM</b><span style="color:#4fe0a0">$500K</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>ANALYSTS</b><span style="color:#e8eaed">40+</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>RISK EXPOSURE</b><span style="color:#ff6b5a">&minus;20%</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>STRATEGY DEV</b><span style="color:#ff6b5a">&minus;15%</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>HACKATHON WINS</b><span style="color:#e8b455">&times;5</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>PRIZES</b><span style="color:#e8b455">$15K+</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>SURFACED</b><span style="color:#4fe0a0">$2B</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>MODEL ACC</b><span style="color:#4fe0a0">94%</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>ANOMALIES</b><span style="color:#4fe0a0">97%</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>REPORT TIME</b><span style="color:#ff6b5a">&minus;80%</span></span>
+          <span class="ticker__item" aria-hidden="true"><b>GRAD</b><span style="color:#e8eaed">DEC 2026</span></span>
         </div>
       </div>
-
-      <nav id="navbar" class="nav-menu navbar">
-        <ul>
-          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
-          <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
-          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
-        </ul>
-      </nav><!-- .nav-menu -->
+      <button id="sound-toggle" class="ticker__sound" type="button">SOUND OFF</button>
     </div>
-    <div id="visitor-counter" style="color: white; margin-top: 10px;">
-      Visitors: <span id="visitor-count">0</span>
+
+    <!-- ======= Chapter rail ======= -->
+    <nav class="rail" aria-label="Sections">
+      <a href="#open"><span>OPEN</span><span class="dash"></span></a>
+      <a href="#climb"><span>01 CLIMB</span><span class="dash"></span></a>
+      <a href="#reveal"><span>02 ZOOM OUT</span><span class="dash"></span></a>
+      <a href="#positions"><span>03 POSITIONS</span><span class="dash"></span></a>
+      <a href="#gains"><span>04 GAINS</span><span class="dash"></span></a>
+      <a href="#contact"><span>05 CONTACT</span><span class="dash"></span></a>
+    </nav>
+
+    <!-- ======= Live readout + visitor counter ======= -->
+    <div class="readout" id="visitor-counter">
+      <span>WATCHERS <span class="readout__count" id="visitor-count">&mdash;</span></span>
+      <span id="ticker-readout">DOM 100.00</span>
     </div>
-  </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-    <div class="hero-container" data-aos="fade-in">
-      <h1>Dominick Dupuy</h1>
-      <p>I'm a <span class="typed" data-typed-items="Data Analyst, Quant, AI Specialist"></span></p>
-    </div>
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>About</h2>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-4" data-aos="fade-right">
-            <img src="assets/img/domside_cropped.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
-            <p class="fst-italic">
-              Welcome to my portfolio! I'm Dominick Dupuy, a passionate student pursuing a degree in Computer Science and Statistics at the University of Florida.
-              Ever since I first laid hands on a computer, I've been captivated by the infinite possibilities that technology offers. From crafting elegant code to solving complex problems, every challenge in the world of computing fuels my curiosity and drives my ambition.
-              Whether it's delving into algorithms, mastering programming languages, or exploring the latest advancements in artificial intelligence, I thrive on pushing the boundaries of what's possible.
-              Beyond the technical aspects, I believe in the power of collaboration and creativity.
-              In this portfolio, you'll find a glimpse into my projects, each one representing a blend of technical expertise, creativity, and problem-solving skills. From web development to machine learning experiments, I'm excited to share my journey and showcase how I'm shaping the future through technology.
-              Thank you for visiting, and I invite you to explore my work and connect with me to discuss our shared passion for Computer Science.
-            </p>
-            <div class="row">
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>August 31st, 2005</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+1 352 665 6965</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>Gainesville, Florida </span></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Bachelor</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <!-- ======= Open ======= -->
+    <section id="open">
+      <div class="eyebrow">NASDAQ &middot; DOM &middot; COMMON STOCK</div>
+      <h1>Dominick<br>Dupuy</h1>
+      <p class="intro">
+        CS and Statistics at the University of Florida, graduating December 2026. I spend my time on quant research,
+        trading infrastructure, and AI systems &mdash; mostly because I like problems where the data doesn't cooperate.
+      </p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat__v">$500K</span><span class="stat__k">PORTFOLIO RUN</span></div>
+        <div class="stat"><span class="stat__v">40+</span><span class="stat__k">ANALYSTS LED</span></div>
+        <div class="stat"><span class="stat__v">&times;5</span><span class="stat__k">HACKATHONS WON</span></div>
+        <div class="stat"><span class="stat__v">3.75</span><span class="stat__k">GPA &middot; CS + STATS</span></div>
       </div>
-    </section><!-- End About Section -->
+      <div class="cue"><span>SCROLL TO OPEN POSITION</span><span style="font-size:15px">&darr;</span></div>
+    </section>
 
-    <!-- ======= Languages Section ======= -->
-    <section id="languages" class="skills section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Programming Languages</h2>
-          <p></p>
-        </div>
-
-        <div class="row skills-content">
-          <div class="col-lg-6" data-aos="fade-up">
-            <div class="progress">
-              <span class="skill">Python <i class="val">95%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">C/C++ <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">JavaScript/TypeScript <i class="val">85%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">SQL <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="progress">
-              <span class="skill">Golang <i class="val">70%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">Java <i class="val">70%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">R <i class="val">65%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">MATLAB <i class="val">60%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Languages Section -->
-
-    <!-- ======= Technologies Section ======= -->
-    <section id="technologies" class="skills section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Technologies & Tools</h2>
-          <p></p>
-        </div>
-
-        <div class="row skills-content">
-          <div class="col-lg-6" data-aos="fade-up">
-            <div class="progress">
-              <span class="skill">Python (NumPy, Pandas, PyTorch) <i class="val">95%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">C/C++ <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">React/Next.js <i class="val">85%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">Docker & Cloud (AWS, Azure, GCP) <i class="val">85%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">SQL & Database Design <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="progress">
-              <span class="skill">JavaScript/TypeScript <i class="val">85%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">Django/Flask <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">TensorFlow & ML/AI Frameworks <i class="val">85%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">Git & Agile Development <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="progress">
-              <span class="skill">OpenCV & Computer Vision <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Technologies Section -->
-
-    <!-- ======= Resume Section ======= -->
-    <section id="resume" class="resume">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Resume</h2>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6" data-aos="fade-up">
-            <h3 class="resume-title">Summary</h3>
-            <div class="resume-item pb-0">
-              <h4>Dominick Dupuy</h4>
-              <p><em>Innovative and deadline-driven Software Developer with 3+ years of experience who thrives in challenges. Driven by an unquenchable curiosity for learning.</em></p>
-              <ul>
-                <li>Gainesville, FL</li>
-                <li>(352) 665 - 6965</li>
-                <li>domdd305@gmail.com</li>
-              </ul>
-            </div>
-
-            <h3 class="resume-title">Education</h3>
-            <div class="resume-item">
-              <h4>Bachelor of Science in Computer Science</h4>
-              <h5>Expected Graduation: May 2027</h5>
-              <p><em>University of Florida, Gainesville, FL</em></p>
-            </div>
-            <div class="resume-item">
-              <h4>Bachelor of Science in Statistics</h4>
-              <h5>Expected Graduation: May 2027</h5>
-              <p><em>University of Florida, Gainesville, FL</em></p>
-              <p><strong>GPA: 3.82 / 4.0</strong></p>
-            </div>
-
-            <h3 class="resume-title">Hackathon Achievements</h3>
-            <div class="resume-item">
-              <h4>ShellHacks 2025 - 1st Place Winner</h4>
-              <h5>September 2025 | Miami, FL</h5>
-              <p><em>Invoice Fraud Detection Suite</em></p>
-              <ul>
-                <li>Led cross-disciplinary team to victory among 1,000+ hackers</li>
-                <li>Developed multi-agent AI platform for automated fraud detection</li>
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>HealthHacks 2025 - Dual Winner</h4>
-              <h5>October 2025 | Tampa, FL</h5>
-              <p><em>CareTrackr AI Patient Follow-Up</em></p>
-              <ul>
-                <li>2nd Place Overall Pitch Competition</li>
-                <li>1st Place Clinical Operations Track</li>
-                <li>AI Infrastructure Lead - designed 17-agent system with sub-5s processing</li>
-              </ul>
-            </div>
-
-            <div class="resume-item">
-              <h4>Knight Hacks 2025 - 1st Place (AMD) & 3rd Place (Morgan & Morgan)</h4>
-              <h5>2025</h5>
-              <p><em>Paralegal AI - Intelligent Legal Research System</em></p>
-              <ul>
-                <li>Built a hyper-parallel legal research system with 100 async workers and 41.7 cases/sec peak throughput</li>
-                <li>Generated 3-5 optimized legal queries per question using Saul-7B for targeted search</li>
-                <li>Integrated CourtListener and LexisNexis routing for common versus rare case coverage</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">Professional Experience</h3>
-            <div class="resume-item">
-              <h4>President</h4>
-              <h5>August 2024 - Present</h5>
-              <p><em>AlgoGators Investment Fund Inc., Gainesville, FL</em></p>
-              <ul>
-                <li>Directed 35 analysts in managing a $500K portfolio, built C++/Python research pipelines (>20K LOC), and led events/meetings to advance cutting-edge quantitative strategies</li>
-                <li>Engineered an interactive risk analysis dashboard with Next.js and Flask, reducing strategy dev time by 15%</li>
-                <li>Created a C++ risk management module that dynamically adjusted position sizes, reducing risk exposure by 20%</li>
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>Data Analyst</h4>
-              <h5>May 2025 - August 2025</h5>
-              <p><em>Banco Popular Dominicano, Santo Domingo, Dominican Republic</em></p>
-              <ul>
-                <li>Designed statistical models on 500K+ monthly transactions, identifying over $2 billion in unprofitable products</li>
-                <li>Built Python ETL pipelines that slashed report dev time 80%, enabling same-day insights for senior leadership</li>
-                <li>Developed ML classifiers with 94% accuracy to forecast client profitability, uncovering 3 overlooked risk drivers</li>
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>Data Scientist and AI Developer</h4>
-              <h5>November 2024 - May 2025</h5>
-              <p><em>AdventHealth, Gainesville, FL</em></p>
-              <ul>
-                <li>Led undergraduate team in ETL, employing complex ML/AI and stats models to detect 97% of anomalies</li>
-                <li>Harnessed the power of the largest university-owned supercomputer, cutting report time by 60%</li>
-                <li>Presented weekly insights to the CFO using ChatGPT, streamlining financial operations across 50+ hospitals</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Resume Section -->
-
-    <!-- ======= Hackathon Winners Section ======= -->
-    <section id="hackathon-winners" class="portfolio">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>🏆 Hackathon Winners</h2>
-          <p>Award-winning projects developed under intense time constraints, showcasing innovation, teamwork, and technical excellence.</p>
-        </div>
-
-        <div class="row hackathon-container" data-aos="fade-up" data-aos-delay="100">
-          
-          <!-- Invoice Fraud Detection Suite -->
-          <div class="col-lg-6 col-md-12 portfolio-item">
-            <div class="portfolio-wrap" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px;">
-              <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 8px;">
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                  <span style="font-size: 48px; margin-right: 15px;">🏆</span>
-                  <div>
-                    <h3 style="margin: 0; color: #667eea;">ShellHacks 2025 - 1st Place</h3>
-                    <p style="margin: 5px 0 0 0; color: #666;">Won among 1,000+ hackers</p>
-                  </div>
-                </div>
-                <h4 style="color: #333; margin: 15px 0;">Invoice Fraud Detection Suite</h4>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                  Multi-agent AI platform that automates invoice fraud detection using LLM-orchestrated specialist agents, BigQuery data pipeline, and modular Agent Development Kit. Reduces manual review time by 80% while catching sophisticated fraud patterns.
-                </p>
-                <div style="margin-top: 20px;">
-                  <span style="display: inline-block; background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">AI/ML</span>
-                  <span style="display: inline-block; background: #764ba2; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Full Stack</span>
-                  <span style="display: inline-block; background: #f093fb; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px;">Data Engineering</span>
-                </div>
-                <div class="portfolio-links" style="margin-top: 20px; position: relative; bottom: auto;">
-                  <a href="details_InvoiceFraud.html" class="btn btn-primary" style="background: #667eea; border: none; margin-right: 10px;">
-                    <i class="bx bx-plus"></i> More Details
-                  </a>
-                  <a href="https://github.com/BonelessWater/InvoiceFraudDetector" class="btn btn-primary" style="background: #764ba2; border: none;">
-                    <i class="bx bx-link"></i> View Project
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- CareTrackr -->
-          <div class="col-lg-6 col-md-12 portfolio-item">
-            <div class="portfolio-wrap" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px; border-radius: 10px;">
-              <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 8px;">
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                  <span style="font-size: 48px; margin-right: 15px;">🥈🥇</span>
-                  <div>
-                    <h3 style="margin: 0; color: #4facfe;">HealthHacks 2025 - 2nd Place & 1st Clinical Ops</h3>
-                    <p style="margin: 5px 0 0 0; color: #666;">Dual award winner</p>
-                  </div>
-                </div>
-                <h4 style="color: #333; margin: 15px 0;">CareTrackr: AI Patient Follow-Up System</h4>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                  Automated patient follow-up system that addresses the 108M patients lost to lack of communication. Designed AI infrastructure with 17 specialized medical agents achieving real-time analysis in under 5 seconds during live phone calls. Integrates with EHR systems to generate instant physician reports.
-                </p>
-                <div style="margin-top: 20px;">
-                  <span style="display: inline-block; background: #4facfe; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Healthcare AI</span>
-                  <span style="display: inline-block; background: #00f2fe; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Multi-Agent Systems</span>
-                  <span style="display: inline-block; background: #43e97b; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px;">Real-Time Processing</span>
-                </div>
-                <div class="portfolio-links" style="margin-top: 20px; position: relative; bottom: auto;">
-                  <a href="details_CareTrackr.html" class="btn btn-primary" style="background: #4facfe; border: none; margin-right: 10px;">
-                    <i class="bx bx-plus"></i> More Details
-                  </a>
-                  <a href="https://github.com/BonelessWater/CareTrackr" class="btn btn-primary" style="background: #00f2fe; border: none;">
-                    <i class="bx bx-link"></i> View Project
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!-- Paralegal AI -->
-          <div class="col-lg-6 col-md-12 portfolio-item">
-            <div class="portfolio-wrap" style="background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%); padding: 30px; border-radius: 10px;">
-              <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 8px;">
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                  <span style="font-size: 36px; margin-right: 15px; font-weight: 700; color: #f59e0b;">WIN</span>
-                  <div>
-                    <h3 style="margin: 0; color: #f59e0b;">Knight Hacks 2025 - 1st Place (AMD) & 3rd Place (Morgan & Morgan)</h3>
-                    <p style="margin: 5px 0 0 0; color: #666;">Multi-award hackathon win</p>
-                  </div>
-                </div>
-                <h4 style="color: #333; margin: 15px 0;">Paralegal AI: Intelligent Legal Research</h4>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                  Intelligent legal research system that generates 3-5 optimized queries, scrapes 20-60 relevant opinions per question, and benchmarks at 41.7 cases/sec with 100 async workers. Uses Saul-7B for query generation and GPU-accelerated FAISS for retrieval.
-                </p>
-                <div style="margin-top: 20px;">
-                  <span style="display: inline-block; background: #f59e0b; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Legal AI</span>
-                  <span style="display: inline-block; background: #f97316; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; margin-right: 8px;">Async Systems</span>
-                  <span style="display: inline-block; background: #84cc16; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px;">GPU Acceleration</span>
-                </div>
-                <div class="portfolio-links" style="margin-top: 20px; position: relative; bottom: auto;">
-                  <a href="details_Paralegal.html" class="btn btn-primary" style="background: #f59e0b; border: none; margin-right: 10px;">
-                    <i class="bx bx-plus"></i> More Details
-                  </a>
-                  <a href="https://github.com/BonelessWater/Paralegal" class="btn btn-primary" style="background: #f97316; border: none;">
-                    <i class="bx bx-link"></i> View Project
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Hackathon Winners Section -->
-
-    <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Portfolio</h2>
-          <p>Here's a display of my most recent projects over the last few years with a few takeaways of the experience. Most of these projects were derived out of my self-interest in curiosity and improvement.</p>
-        </div>
-
-        <div class="row" data-aos="fade-up">
-          <div class="col-lg-12 d-flex justify-content-center">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-FS">Full Stack</li>
-              <li data-filter=".filter-DA">Data Analysis</li>
-              <li data-filter=".filter-AI">Artificial Intelligence</li>
-              <li data-filter=".filter-OTHER">Other</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="100">
-          
-          <!-- ASL Gesture Control -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-AI">
-            <div class="portfolio-wrap text-center">
-              <a href="details_ASL.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">ASL Gesture-Controlled Interface</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_ASL.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/ASL-Gesture-Control" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Password Manager -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-FS filter-AI">
-            <div class="portfolio-wrap text-center">
-              <a href="details_PasswordManager.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Password Manager with Face ID</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_PasswordManager.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/Password-Manager" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Artemis -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-FS">
-            <div class="portfolio-wrap text-center">
-              <a href="details_Artemis.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Artemis: Hiking Companion App</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_Artemis.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/Artemis" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sports Analytics -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-AI filter-DA">
-            <div class="portfolio-wrap text-center">
-              <a href="details_SportsAnalytics.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Sports Analytics Outcome Predictor</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_SportsAnalytics.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/Sports-Analytics" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Financial Portfolio Builder (Trading Bot) -->
-           <!--
-          <div class="col-lg-4 col-md-6 portfolio-item filter-FS filter-DA filter-AI">
-            <div class="portfolio-wrap text-center">
-              <a href="details_Trader.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Financial Portfolio Builder</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_Trader.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://stockportfoliobuilder.azurewebsites.net" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-        -->
-
-          <!-- Neural Network -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-AI">
-            <div class="portfolio-wrap text-center">
-              <a href="details_NN.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Neural Network & Stock Prediction</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_NN.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/NeuralNetworkv2" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Blockchain -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-OTHER">
-            <div class="portfolio-wrap text-center">
-              <a href="details_Blockchain.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">Custom Blockchain Protocol</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_Blockchain.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/Blockchain" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- WikiRaceGNN -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-AI filter-DA">
-            <div class="portfolio-wrap text-center">
-              <a href="details_WikiRaceGNN.html" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:10px;">WikiRaceGNN: Graph Neural Network</a>
-              <div class="portfolio-links" style="margin-top:10px;">
-                <a href="details_WikiRaceGNN.html" title="More Details"><i class="bx bx-plus"></i></a>
-                <a href="https://github.com/BonelessWater/WikiRaceGNN" title="Project"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-          -->
-
-        </div>
-
+    <!-- ======= 01 The climb ======= -->
+    <section id="climb">
+      <div class="sticky">
+        <div class="eyebrow sc-fade r-a">01 &mdash; THE CLIMB</div>
+        <h2 class="sc-rise r-b">Nothing compounds<br>in a straight line.</h2>
+        <p class="lead sc-rise r-c" style="margin:30px 0 0 0">
+          Three years of small stuff that added up. A model that finally converged at 2am. A pipeline that stopped
+          breaking. None of it felt like progress on the day.
+        </p>
+        <p class="note sc-fade r-d">// keep scrolling. there's a shape to this.</p>
       </div>
     </section>
-    <!-- End Portfolio Section -->
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <div class="section-title">
-          <h2>Contact</h2>
-        </div>
-        <div id="contact-info">
-          <div class="row skills-content">
-            <div class="col-lg-12 d-flex align-items-stretch">
-              <div class="info">
-                <div class="address">
-                  <i class="bi bi-geo-alt"></i>
-                  <h4>Location:</h4>
-                  <p>Gainesville, Florida, United States</p>
-                </div>
-                <div class="email">
-                  <i class="bi bi-envelope"></i>
-                  <h4>Email:</h4>
-                  <p>domdd305@gmail.com</p>
-                </div>
-                <div class="phone">
-                  <i class="bi bi-phone"></i>
-                  <h4>Call:</h4>
-                  <p>+1 352 665 6965</p>
-                </div>
-              </div>
+    <!-- ======= 02 Zoom out ======= -->
+    <section id="reveal">
+      <div class="sticky">
+        <div class="eyebrow eyebrow--gold sc-fade r-e">02 &mdash; ZOOM OUT</div>
+        <h2 class="sc-rise r-f">It was never a hill.<br>It was a chart.</h2>
+        <p class="lead sc-rise r-g" style="margin:28px 0 0 0; max-width:560px">
+          Every dip taught me something. Every ridge was something that shipped. Here's the whole thing, marked at the
+          moments that mattered.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======= 03 Positions held ======= -->
+    <section id="positions">
+      <div class="eyebrow">03 &mdash; POSITIONS HELD</div>
+      <h2 class="sec">Where I've been.</h2>
+      <p class="sec-meta">10 ROLES &middot; MAY 2024 &rarr; PRESENT</p>
+
+      <div class="positions">
+
+        <article class="position sc-rise r-h">
+          <div>
+            <div class="position__tags">
+              <span class="position__tag">POS 01</span>
+              <span class="badge" style="color:#4fe0a0">ACTIVE</span>
             </div>
-            <div>
-              <div style="width: 100%">
-                <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
-                  src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=University%20of%20Florida+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                </iframe>
-              </div>
+            <h3>Quantitative Developer</h3>
+            <p class="position__org">Confluence Global Capital LLC</p>
+            <p class="position__when">OCT 2025 &mdash; MAY 2026 &middot; AUG 2026 &mdash; PRESENT &middot; GAINESVILLE &rarr; NEW YORK</p>
+            <div class="metrics">
+              <div class="metric"><span class="metric__v">8</span><span class="metric__k">PERSON TEAM</span></div>
+              <div class="metric"><span class="metric__v">HPC</span><span class="metric__k">HIPERGATOR</span></div>
             </div>
+          </div>
+          <ul class="bullets">
+            <li><span class="n">01</span><span>Led an 8-person team developing high-frequency trading strategies from alternative data sources.</span></li>
+            <li><span class="n">02</span><span>Built and deployed strategies on HiPerGator, using large-scale compute for rapid experimentation.</span></li>
+            <li><span class="n">03</span><span>Designed an ETL and backtesting pipeline for data normalization, model training, and equity return prediction.</span></li>
+          </ul>
+        </article>
+
+        <article class="position sc-rise r-h">
+          <div>
+            <div class="position__tags">
+              <span class="position__tag">POS 02</span>
+              <span class="badge" style="color:#6ba7ff">SUMMER 2026</span>
+            </div>
+            <h3>Software Engineer, AI</h3>
+            <p class="position__org">BlackRock &mdash; Aladdin Platform Engineering</p>
+            <p class="position__when">JUN 2026 &mdash; AUG 2026 &middot; NEW YORK, NY</p>
+            <div class="metrics">
+              <div class="metric"><span class="metric__v">AI</span><span class="metric__k">PLATFORM ENG</span></div>
+            </div>
+          </div>
+          <ul class="bullets">
+            <li><span class="n">01</span><span>Summer 2026 AI engineer intern on the Aladdin platform engineering team.</span></li>
+          </ul>
+        </article>
+
+        <article class="position sc-rise r-h">
+          <div>
+            <div class="position__tags">
+              <span class="position__tag">POS 03</span>
+              <span class="badge" style="color:#4fe0a0">ACTIVE &middot; 2 YRS</span>
+            </div>
+            <h3>President</h3>
+            <p class="position__org">AlgoGators Investment Fund</p>
+            <p class="position__when">AUG 2024 &mdash; PRESENT &middot; GAINESVILLE, FL</p>
+            <div class="metrics">
+              <div class="metric"><span class="metric__v">$500K</span><span class="metric__k">PORTFOLIO</span></div>
+              <div class="metric"><span class="metric__v">40+</span><span class="metric__k">ANALYSTS</span></div>
+              <div class="metric"><span class="metric__v">&minus;20%</span><span class="metric__k">RISK EXPOSURE</span></div>
+            </div>
+          </div>
+          <ul class="bullets">
+            <li><span class="n">01</span><span>Directed over 40 analysts in managing a $500K portfolio, fostering a collaborative and results-driven environment.</span></li>
+            <li><span class="n">02</span><span>Created a C++ risk management module that reduced risk exposure by 20%, sharpening our strategic decision-making.</span></li>
+            <li><span class="n">03</span><span>Developed an interactive dashboard with Next.js and Flask, cutting strategy development time by 15%.</span></li>
+          </ul>
+        </article>
+
+        <article class="position sc-rise r-h">
+          <div>
+            <div class="position__tags">
+              <span class="position__tag">POS 04</span>
+              <span class="badge" style="color:#e8b455">ACTIVE</span>
+            </div>
+            <h3>Co-Founder</h3>
+            <p class="position__org">QuantED</p>
+            <p class="position__when">MAR 2026 &mdash; PRESENT &middot; GAINESVILLE, FL</p>
+            <div class="metrics">
+              <div class="metric"><span class="metric__v">2026</span><span class="metric__k">FOUNDED</span></div>
+            </div>
+          </div>
+          <ul class="bullets">
+            <li><span class="n">01</span><span>Co-founded an undergraduate quantitative university club focused on democratizing quantitative finance to the masses.</span></li>
+          </ul>
+        </article>
+
+        <article class="position sc-rise r-h">
+          <div>
+            <div class="position__tags">
+              <span class="position__tag">POS 05</span>
+              <span class="badge" style="color:#4fe0a0">ACTIVE</span>
+            </div>
+            <h3>DECODED: Data at Bloomberg</h3>
+            <p class="position__org">Bloomberg &mdash; Apprenticeship</p>
+            <p class="position__when">JUN 2026 &mdash; PRESENT &middot; PRINCETON, NJ &middot; HYBRID</p>
+            <div class="metrics">
+              <div class="metric"><span class="metric__v">TOP 4%</span><span class="metric__k">OF APPLICANTS</span></div>
+              <div class="metric"><span class="metric__v">DATA OPS</span><span class="metric__k">TERMINAL DELIVERY</span></div>
+            </div>
+          </div>
+          <ul class="bullets">
+            <li><span class="n">01</span><span>Selected from the top 4% of applicants for a hybrid apprenticeship focused on Bloomberg's data operations.</span></li>
+            <li><span class="n">02</span><span>Worked across ingestion and quality control through delivery to Terminal clients, with exposure to how the business functions end to end.</span></li>
+          </ul>
+        </article>
+
+      </div>
+
+      <div class="earlier">
+        <div class="earlier__label">EARLIER POSITIONS</div>
+        <div class="earlier__grid">
+          <div class="earlier__cell">
+            <h4>Research Assistant</h4>
+            <p class="org">University of Florida</p>
+            <p class="when">JAN 2026 &mdash; APR 2026 &middot; GAINESVILLE, FL</p>
+            <p class="note">Built a high-frequency options pricing and risk engine on intraday time statistics, with JIT-accelerated Greeks for real-time sensitivity analysis and Python ETL for large-scale options data.</p>
+          </div>
+          <div class="earlier__cell">
+            <h4>Data Analyst</h4>
+            <p class="org">Banco Popular Dominicano</p>
+            <p class="when">MAY 2025 &mdash; AUG 2025 &middot; SANTO DOMINGO, DR</p>
+            <p class="note">Modeled 500K+ monthly transactions, surfacing $2B in unprofitable products. ETL pipelines cut report dev time 80%; ML classifiers hit 94% accuracy on client profitability.</p>
+          </div>
+          <div class="earlier__cell">
+            <h4>Data Scientist &amp; AI Developer</h4>
+            <p class="org">AdventHealth</p>
+            <p class="when">NOV 2024 &mdash; MAY 2025 &middot; GAINESVILLE, FL</p>
+            <p class="note">Led an undergraduate team detecting 97% of anomalies; cut report time 60% on the largest university-owned supercomputer, presenting weekly to the CFO across 50+ hospitals.</p>
+          </div>
+          <div class="earlier__cell">
+            <h4>Computer Vision Engineer</h4>
+            <p class="org">Supermercados La Cadena</p>
+            <p class="when">JUN 2024 &mdash; SEP 2024 &middot; DOMINICAN REPUBLIC</p>
+            <p class="note">YOLOv10 and OpenCV on surveillance footage at 95% accuracy, cutting labor costs 25% across a major retail chain.</p>
+          </div>
+          <div class="earlier__cell">
+            <h4>Jr. Full-Stack Developer</h4>
+            <p class="org">CCI Puesto de Bolsa</p>
+            <p class="when">MAY 2024 &mdash; JUL 2024 &middot; SANTO DOMINGO, DR</p>
+            <p class="note">Digitized client-employee interfaces in Django, lifting consumer acquisition 75% and accelerating onboarding 40%.</p>
           </div>
         </div>
       </div>
-    </section><!-- End Contact Section -->
+    </section>
 
-  </main><!-- End #main -->
+    <!-- ======= 04 Realized gains ======= -->
+    <section id="gains">
+      <div class="eyebrow eyebrow--gold">04 &mdash; REALIZED GAINS</div>
+      <h2 class="sec">Five hackathons won.<br>$15K in prizes.</h2>
+      <p class="lead">KnightHacks, ShellHacks, HealthHacks, SwampHacks, GoldenByte. A lot of coffee and not much sleep. Three favorites below.</p>
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-  </footer><!-- End Footer -->
+      <div class="wins">
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
-    <i class="bi bi-arrow-up-short"></i>
-  </a>
+        <article class="win sc-slide r-i">
+          <div class="win__head">
+            <span class="win__event">SHELLHACKS 2025 &middot; MIAMI</span>
+            <span class="win__place">1ST OF 1,000+</span>
+          </div>
+          <div class="win__headline">&minus;80%</div>
+          <h3>Invoice Fraud Detection Suite</h3>
+          <p class="win__body">Multi-agent AI platform that automates invoice fraud detection with LLM-orchestrated specialist agents, a BigQuery pipeline, and a modular Agent Development Kit. Cuts manual review 80% while catching patterns humans miss.</p>
+          <div class="win__tags">
+            <span class="chip">AI/ML</span><span class="chip">FULL STACK</span><span class="chip">DATA ENGINEERING</span>
+          </div>
+          <a class="win__link" href="https://github.com/dominickdupuy">VIEW SOURCE &rarr;</a>
+        </article>
 
-  <!-- Vendor JS Files -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+        <article class="win win--gold sc-slide r-i">
+          <div class="win__head">
+            <span class="win__event">HEALTHHACKS 2025 &middot; TAMPA</span>
+            <span class="win__place">1ST + 2ND</span>
+          </div>
+          <div class="win__headline">17</div>
+          <h3>CareTrackr: AI Patient Follow-Up</h3>
+          <p class="win__body">108M patients get lost to bad communication. As AI infrastructure lead I designed 17 specialized medical agents analyzing live phone calls in under five seconds, writing physician reports straight into the EHR.</p>
+          <div class="win__tags">
+            <span class="chip">HEALTHCARE AI</span><span class="chip">MULTI-AGENT</span><span class="chip">REAL-TIME</span>
+          </div>
+          <a class="win__link" href="https://github.com/dominickdupuy">VIEW SOURCE &rarr;</a>
+        </article>
 
-  <!-- Template Main JS File -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/data.js"></script>
-  <script> 
+        <article class="win win--blue sc-slide r-i">
+          <div class="win__head">
+            <span class="win__event">KNIGHT HACKS 2025</span>
+            <span class="win__place">1ST AMD &middot; 3RD M&amp;M</span>
+          </div>
+          <div class="win__headline">41.7/s</div>
+          <h3>Paralegal AI: Legal Research Engine</h3>
+          <p class="win__body">Hyper-parallel legal research at 41.7 cases per second across 100 async workers. Saul-7B writes 3&ndash;5 targeted queries per question, GPU-accelerated FAISS retrieves, and CourtListener/LexisNexis routing covers both common and rare case law.</p>
+          <div class="win__tags">
+            <span class="chip">LEGAL AI</span><span class="chip">ASYNC SYSTEMS</span><span class="chip">GPU</span>
+          </div>
+          <a class="win__link" href="https://github.com/dominickdupuy">VIEW SOURCE &rarr;</a>
+        </article>
+
+      </div>
+
+      <div class="founder">
+        <div>
+          <div class="founder__label">FOUNDER &amp; ORGANIZER &middot; OCT 2026</div>
+          <h3>Gator Quant Hacks</h3>
+          <p>I started a national quant finance competition from scratch. Jane Street, Citadel, QuantConnect, and Databento came on board for $25K+ in sponsorships.</p>
+        </div>
+        <div class="founder__stats">
+          <div class="stat"><span class="stat__v">$25K+</span><span class="stat__k">SPONSORSHIPS</span></div>
+          <div class="stat"><span class="stat__v">4</span><span class="stat__k">FIRM SPONSORS</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= 05 Open interest ======= -->
+    <section id="contact">
+      <div class="eyebrow">05 &mdash; OPEN INTEREST</div>
+      <h2>Let's talk.</h2>
+      <p class="lead">
+        I'm graduating in December 2026 and looking for teams working on genuinely hard problems. If that sounds like
+        yours, I'd love to hear from you.
+      </p>
+      <div class="cta-row">
+        <a class="cta cta--solid" href="mailto:domdd305@gmail.com">EMAIL &mdash; DOMDD305@GMAIL.COM</a>
+        <a class="cta cta--ghost" href="https://www.linkedin.com/in/dominick-dupuy/">LINKEDIN</a>
+        <a class="cta cta--ghost" href="https://github.com/dominickdupuy">GITHUB</a>
+      </div>
+      <div class="colophon">
+        <span>DOMINICK DUPUY &middot; GAINESVILLE, FL</span>
+        <span>PAST PERFORMANCE IS INDICATIVE OF FUTURE RESULTS</span>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======= Scroll-driven candlestick backdrop ======= -->
+  <script>
+    (function () {
+      var ACCENT = '#4fe0a0';
+      var CLIMB_ZOOM = 8;
+      var N = 150;
+
+      var canvas = document.getElementById('chart');
+      var readout = document.getElementById('ticker-readout');
+      var soundBtn = document.getElementById('sound-toggle');
+      if (!canvas) return;
+
+      var soundOn = false, audioCtx = null, lastBlip = 0;
+      var W = 0, H = 0, lastIdx = -1;
+      var cam = { zoom: CLIMB_ZOOM, cx: 0.02, cy: 0.1, reveal: 0.02, alpha: 1 };
+
+      function rgba(a) {
+        var h = ACCENT.replace('#', '');
+        var n = parseInt(h.length === 3 ? h.split('').map(function (c) { return c + c; }).join('') : h, 16);
+        return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+      }
+
+      // Deterministic series, so the chart tells the same story on every visit.
+      function buildSeries(n) {
+        var seed = 20050831;
+        var rnd = function () { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+        var out = [], p = 100;
+        for (var i = 0; i < n; i++) {
+          var cycle = Math.sin(i / 13) * 0.6 + Math.sin(i / 31) * 0.9;
+          var o = p;
+          p = p * (1 + (rnd() - 0.455) * 0.052 + cycle * 0.0035) + 0.55;
+          var c = p, vol = Math.abs(c - o) + 0.6 + rnd() * 1.6;
+          out.push({ o: o, c: c, h: Math.max(o, c) + rnd() * vol * 0.7, l: Math.min(o, c) - rnd() * vol * 0.7 });
+        }
+        var lo = Infinity, hi = -Infinity;
+        out.forEach(function (k) { lo = Math.min(lo, k.l); hi = Math.max(hi, k.h); });
+        var s = function (v) { return (v - lo) / (hi - lo); };
+        return out.map(function (k) {
+          return { o: s(k.o), c: s(k.c), h: s(k.h), l: s(k.l), raw: k.c, lo: lo, hi: hi };
+        });
+      }
+
+      var candles = buildSeries(N);
+      var milestones = [
+        { t: 0.20, label: 'ALGOGATORS · PRESIDENT' },
+        { t: 0.36, label: 'BANCO POPULAR · ANALYST' },
+        { t: 0.52, label: 'CONFLUENCE · QUANT DEV' },
+        { t: 0.66, label: '5 HACKATHONS WON' },
+        { t: 0.80, label: 'QUANTED · CO-FOUNDER' },
+        { t: 0.94, label: 'BLACKROCK · ALADDIN' }
+      ];
+
+      function resize() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth; H = canvas.clientHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function initAudio() {
+        if (audioCtx) { audioCtx.resume(); return; }
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+
+      function blip(v, up) {
+        if (!soundOn || !audioCtx) return;
+        var t = audioCtx.currentTime;
+        if (t - lastBlip < 0.045) return;
+        lastBlip = t;
+        var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = up ? 'triangle' : 'sine';
+        o.frequency.value = 180 + v * 620;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(up ? 0.05 : 0.035, t + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+        o.connect(g).connect(audioCtx.destination);
+        o.start(t); o.stop(t + 0.16);
+      }
+
+      if (soundBtn) {
+        soundBtn.addEventListener('click', function () {
+          soundOn = !soundOn;
+          soundBtn.textContent = soundOn ? 'SOUND ON' : 'SOUND OFF';
+          soundBtn.classList.toggle('is-on', soundOn);
+          if (soundOn) initAudio();
+        });
+      }
+
+      function frame() {
+        var revealEl = document.getElementById('reveal');
+        if (!revealEl) return;
+        var bottom = revealEl.offsetTop + revealEl.offsetHeight;
+        var span = Math.max(1, bottom - window.innerHeight);
+        var cp = Math.min(1, Math.max(0, window.scrollY / span));
+        var cl = function (x) { return Math.min(1, Math.max(0, x)); };
+        var ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+        var lerp = function (a, b, t) { return a + (b - a) * t; };
+
+        var reveal = Math.max(0.02, cl(cp / 0.58));
+        var zt = ease(cl((cp - 0.58) / 0.36));
+        var idxF = reveal * (N - 1);
+        var cur = candles[Math.min(N - 1, Math.floor(idxF))];
+
+        cam.reveal = reveal;
+        cam.zoom = lerp(CLIMB_ZOOM, 1, zt);
+        cam.cx = lerp(reveal, 0.5, zt);
+        cam.cy = lerp(cur.c, 0.5, zt);
+
+        var past = Math.max(0, window.scrollY - bottom);
+        cam.alpha = lerp(1, 0.34, cl(past / (window.innerHeight * 0.7)));
+
+        var idx = Math.floor(idxF);
+        if (idx !== lastIdx) {
+          if (lastIdx >= 0 && Math.abs(idx - lastIdx) < 12) blip(cur.c, cur.c >= cur.o);
+          lastIdx = idx;
+          if (readout) {
+            var up = cur.c >= cur.o;
+            readout.textContent = 'DOM ' + cur.raw.toFixed(2) + (up ? '  ▲' : '  ▼');
+            readout.style.color = up ? ACCENT : '#ff6b5a';
+          }
+        }
+        draw();
+      }
+
+      function draw() {
+        var g = canvas.getContext('2d');
+        g.clearRect(0, 0, W, H);
+        g.globalAlpha = 1;
+
+        var mx = function (t) { return W / 2 + (t - cam.cx) * W * cam.zoom; };
+        var my = function (v) { return H * 0.54 + (cam.cy - v) * H * 0.6 * cam.zoom; };
+
+        g.save();
+        g.globalAlpha = cam.alpha;
+
+        g.strokeStyle = '#12171f'; g.lineWidth = 1;
+        g.font = "10px 'JetBrains Mono', monospace"; g.textAlign = 'right';
+        for (var i = 0; i <= 8; i++) {
+          var v = i / 8, y = my(v);
+          if (y < 44 || y > H - 20) continue;
+          g.beginPath(); g.moveTo(0, y); g.lineTo(W - 78, y); g.stroke();
+          g.fillStyle = '#2b323d';
+          var c0 = candles[0];
+          g.fillText((c0.lo + v * (c0.hi - c0.lo)).toFixed(1), W - 86, y + 3);
+        }
+
+        var lastI = Math.min(N - 1, Math.floor(cam.reveal * (N - 1)));
+        var cw = Math.max(1.1, (W * cam.zoom / N) * 0.56);
+
+        g.beginPath();
+        g.moveTo(mx(0), H + 2);
+        for (var j = 0; j <= lastI; j++) g.lineTo(mx(j / (N - 1)), my(candles[j].c));
+        g.lineTo(mx(lastI / (N - 1)), H + 2);
+        g.closePath();
+        var grad = g.createLinearGradient(0, my(1), 0, H);
+        grad.addColorStop(0, rgba(0.20));
+        grad.addColorStop(1, rgba(0));
+        g.fillStyle = grad; g.fill();
+
+        g.beginPath();
+        for (var k = 0; k <= lastI; k++) {
+          var x0 = mx(k / (N - 1)), y0 = my(candles[k].c);
+          if (k) { g.lineTo(x0, y0); } else { g.moveTo(x0, y0); }
+        }
+        g.strokeStyle = rgba(0.9); g.lineWidth = cam.zoom > 2.5 ? 2.4 : 1.4;
+        g.shadowColor = rgba(0.55); g.shadowBlur = 16; g.stroke();
+        g.shadowBlur = 0;
+
+        for (var m = 0; m <= lastI; m++) {
+          var kk = candles[m], x = mx(m / (N - 1));
+          if (x < -40 || x > W + 40) continue;
+          var up = kk.c >= kk.o;
+          g.strokeStyle = up ? rgba(0.55) : 'rgba(255,107,90,0.55)';
+          g.fillStyle = up ? rgba(0.20) : 'rgba(255,107,90,0.24)';
+          g.lineWidth = 1;
+          g.beginPath(); g.moveTo(x, my(kk.h)); g.lineTo(x, my(kk.l)); g.stroke();
+          var yT = my(Math.max(kk.o, kk.c)), yB = my(Math.min(kk.o, kk.c));
+          g.fillRect(x - cw / 2, yT, cw, Math.max(1, yB - yT));
+          g.strokeRect(x - cw / 2, yT, cw, Math.max(1, yB - yT));
+        }
+
+        var lx = mx(lastI / (N - 1)), ly = my(candles[lastI].c);
+        g.setLineDash([3, 5]); g.strokeStyle = rgba(0.35); g.lineWidth = 1;
+        g.beginPath(); g.moveTo(0, ly); g.lineTo(W, ly); g.stroke();
+        g.setLineDash([]);
+        g.fillStyle = ACCENT; g.beginPath(); g.arc(lx, ly, 3.5, 0, Math.PI * 2); g.fill();
+        g.shadowColor = rgba(0.8); g.shadowBlur = 14; g.fill(); g.shadowBlur = 0;
+
+        if (cam.zoom < 2.2) {
+          var a = Math.min(1, (2.2 - cam.zoom) / 1.1);
+          g.globalAlpha = cam.alpha * a;
+          g.font = "10px 'JetBrains Mono', monospace";
+          milestones.forEach(function (ms, jj) {
+            var i2 = Math.round(ms.t * (N - 1));
+            if (i2 > lastI) return;
+            var x2 = mx(ms.t), y2 = my(candles[i2].h);
+            var dir = jj % 2 === 0 ? -1 : 1;
+            var ly2 = y2 + dir * (34 + (jj % 3) * 22);
+            g.strokeStyle = 'rgba(232,180,85,0.5)'; g.lineWidth = 1;
+            g.beginPath(); g.moveTo(x2, y2 - 6); g.lineTo(x2, ly2); g.stroke();
+            g.fillStyle = '#e8b455'; g.beginPath(); g.arc(x2, y2 - 6, 2.6, 0, Math.PI * 2); g.fill();
+            g.textAlign = x2 > W * 0.72 ? 'right' : 'left';
+            g.fillStyle = '#c9a35e';
+            g.fillText(ms.label, x2 + (x2 > W * 0.72 ? -8 : 8), ly2 + 3);
+          });
+        }
+        g.restore();
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      (function tick() { frame(); requestAnimationFrame(tick); })();
+    })();
+  </script>
+
+  <!-- ======= Visitor counter ======= -->
+  <script>
     window.addEventListener('DOMContentLoaded', async () => {
+      const el = document.getElementById('visitor-count');
       try {
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const publicIp = ipData.ip;
-
         const urlParams = new URLSearchParams(window.location.search);
         const source = urlParams.get('source');
 
-        await fetch('/update-ip' + (source ? `?source=${source}` : ''), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ip: publicIp })
-        });
+        try {
+          const ipResponse = await fetch('https://api.ipify.org?format=json');
+          const ipData = await ipResponse.json();
+          await fetch('/update-ip' + (source ? `?source=${source}` : ''), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ip: ipData.ip,
+              path: window.location.pathname + window.location.search,
+              referrer: document.referrer
+            })
+          });
+        } catch (ipErr) {
+          // A blocked ipify call (ad blocker, offline) shouldn't hide the count.
+          console.warn('Could not log visit:', ipErr);
+        }
 
         const countResponse = await fetch('/get-count');
         const countData = await countResponse.json();
-        document.getElementById('visitor-count').innerText = countData.count;
+        el.innerText = Number(countData.count).toLocaleString('en-US');
       } catch (err) {
-        console.error("Error updating visitor counter:", err);
+        console.error('Error updating visitor counter:', err);
+        if (el) el.innerText = '—';
       }
     });
   </script>
-  
-</body>
 
-</html>st source = urlParams.get('source');
-
-        await fetch('/update-ip' + (source ? `?source=${source}` : ''), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ip: publicIp })
-        });
-
-        const countResponse = await fetch('/get-count');
-        const countData = await countResponse.json();
-        document.getElementById('visitor-count').innerText = countData.count;
-      } catch (err) {
-        console.error("Error updating visitor counter:", err);
-      }
-    });
-  </script>
-  
 </body>
 
 </html>
